@@ -1,0 +1,72 @@
+﻿@model EMart.Models.User
+@{
+    ViewBag.Title = "ProfileSetting";
+    Layout = "~/Views/Shared/_ShopManager_Layout.cshtml";
+}
+
+<ol class="breadcrumb">
+    <li class="breadcrumb-item text-white">
+        <a href="/Admin/Index" class="text-info">Dashboard</a>
+    </li>
+    <li class="breadcrumb-item active text-info">Profile Setting</li>
+</ol>
+<div class="container">
+    <hr />
+    <div class="row">
+        @if (TempData["UserUpdateInfo"] != null)
+    {
+        <div class="alert alert-success ml-3">
+            <strong>
+                @TempData["UserUpdateInfo"]
+            </strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
+    </div>
+    <div class="row">
+        <div class="card col-10 offset-1">
+            <div class="card-header bg-info font-weight-bold text-white">
+                Profile Setting
+            </div>
+            <div class="card-body">
+                <div class="col-12 col-lg-12 col-md-12">
+                    @using (Html.BeginForm("ProfileSetting", "ShopManager", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.FirstName, "First Name")
+                            @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control", placeholder = "Enter name", type = "text" })
+                            @Html.ValidationMessageFor(model => model.FirstName)
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.LastName, "Last Name")
+                            @Html.TextBoxFor(model => model.LastName, new { @class = "form-control", placeholder = "Enter Last name", type = "text" })
+                            @Html.ValidationMessageFor(model => model.LastName)
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.UserAddress, "Adress")
+
+                            @Html.TextAreaFor(model => model.UserAddress, new { @class = "form-control", placeholder = "Enter name" })
+
+                            @Html.ValidationMessageFor(model => model.UserAddress)
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.UserPassword, "Password")
+                            @Html.TextBoxFor(model => model.UserPassword, new { @class = "form-control", placeholder = "Enter Password", type = "Password", @minlength = "6" })
+                            @Html.ValidationMessageFor(model => model.UserPassword)
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.ConfirmPassword, "Confirm Password")
+                            @Html.TextBoxFor(model => model.ConfirmPassword, new { @class = "form-control", placeholder = "Retype Password", type = "Password", @minlength = "6" })
+                            @Html.ValidationMessageFor(model => model.ConfirmPassword)
+                        </div>
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(m => m.UserId)
+                        <input class=" btn btn-info text-white  font-weight-bold" type="submit" value="Update" />
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

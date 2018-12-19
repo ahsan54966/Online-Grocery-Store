@@ -1,0 +1,35 @@
+﻿@model EMart.Models.RegisterationViewModel
+@{
+    Layout = "~/Views/Shared/_Registeration_Layout.cshtml";
+}
+<div class="container">
+    <div class="card card-login mx-auto mt-5">
+        <div class="card-header">Login</div>
+        <div class="card-body">
+            @using (Html.BeginForm("FinalyCustomerRegister", "Registeration"))
+            {
+                <div class="form-group">
+                    @Html.LabelFor(model => model.User.VerifyCode, "Enter Your Verify Code")
+                    @Html.TextBoxFor(model => model.User.VerifyCode, new { @class = "form-control", placeholder = "76543", @minlength = "5", @maxlength = "5" })
+                    @Html.ValidationMessageFor(model => model.User.VerifyCode)
+
+
+                </div>
+
+                <p>Check Your Email You Recived verify Code</p>
+                <p>@TempData["WrongCode"]</p>
+                @TempData["ResendMessage"]
+                <div class="text-center">
+                    <input type="submit" id="verify" value="Verify" name="command1" title="Register" class="btn btn-primary btn-block" />
+                </div>
+                <br />
+                <div class="text-center">
+
+                    <input type="submit" id="verify" value="Resend Code" name="command1" title="Register" class="btn btn-primary btn-block" />
+                </div>
+
+            }
+
+        </div>
+    </div>
+</div>

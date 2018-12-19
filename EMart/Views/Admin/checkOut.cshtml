@@ -1,0 +1,533 @@
+﻿@model List<EMart.Models.Products>
+@{
+    ViewBag.Title = "checkOut";
+    Layout = "~/Views/Shared/_E_Mart_HomeLayout.cshtml";
+}
+<div class="container">
+    <div class="col-md-12">
+        <div class="col-md-8 col-sm-6">
+
+            <div class="check-out">
+                <h1>Checkout</h1>
+                <table id="myTable">
+                    <tr>
+                        <th>Item</th>
+
+                        <th>Qty</th>
+                        <th>Prices</th>
+
+                        <th>Subtotal</th>
+                    </tr>
+                    @foreach (var s in Model)
+                    {
+                        <tr id="AddToCart">
+                            <td class=" ring-in">
+                                <a href="single.html" class="at-in"><img src="~/images/ce.jpg" class="img-responsive" alt=""></a>
+                                <div class="sed">
+                                    <br />
+                                    <div class="col-md-8"><h5>@s.ProductName</h5></div>
+                                    <button class="	Remove glyphicon glyphicon-trash col-md-3"></button>
+                                </div>
+                                <div class="clearfix"> </div>
+                                <input type="hidden" class="ProductId" value="@s.ProductId" />
+                                <input type="hidden" class="CustomerId" value="@Session["UserId"]" />
+
+                            </td>
+
+                            <!-- <td class="check"><input type="text" value="1" id="Qut" onfocus="Quantity(this.value='');" onblur="if (this.value == '') {this.value ='';}"></td>
+                            -->
+                            <td>
+                                <button class="AddQuantaty">+</button>
+
+                                <input type="text" style="height:25px;width:25px; font-size:14pt;" readonly class="Quantaty" value="@s.ProductQuantaty" />
+
+                                <button class="SubtractQuantaty">-</button>
+                            </td>
+                            @*<td><input type="text" width="50%" readonly value="1"  class='pd-name' /></td>
+
+                                <td><input type="text" width="50%" readonly value="5" class="pd-price" /></td>
+                                <td>
+                                    <button class="btnSelect">Select</button>
+                                </td>*@
+
+                            <td class="Price">@s.ProductPrice </td>
+
+                            <td class="Subtotal">@s.ProductPrice</td>
+                        </tr>
+                    }
+
+                </table>
+            </div>
+        </div>
+        <br /><br /><br /><br /><br />
+        <div class="col-md-4 col-sm-6">
+            <div class="check-out">
+                <div class="card ">
+                    <div class="card-header bg-info text-white font-weight-bold">
+                        <h2 class="text-left">Location</h2>
+                        <h5 class="text-center">Nishat colony</h5>
+                        <br />
+                    </div>
+                    <hr />
+
+                    <div class="card-body">
+                        <h3 class="text-center text-info">Order Sumery</h3>
+                        <br />
+                        <div class="col-md-12">
+                            <div class=" col-md-7  text-left"> SubTotal</div>
+                            <div class="SubTotal text-right ">RS:000</div>
+                            <br />
+                        </div>
+                        <br />
+                        <div class="col-md-12">
+                            <div class=" col-md-7  text-left"> Shipping Fee</div>
+                            <div class=" text-right ">RS:100</div>
+                            <br />
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class=" col-md-7  text-left"> Total</div>
+                            <div class="Total text-right ">RS:000</div>
+                            <br />
+                        </div>
+                        <div class="col-md-12">
+
+                            <button type="submit" class="btn btn-group-justified ">Proceed To CheckOut</button>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*Here is alert meesage*@
+<div id="Addalert" class="alert alert-success ">
+    <div class="close">&times;</div>
+    <strong>ADD</strong> Product Add Sucessfully
+
+</div>
+<div id="Subalert" class="alert alert-success ">
+    <div class="close">&times;</div>
+    <strong>SUB</strong> Product Sub Sucessfully
+
+</div>
+<div id="Removealert" class="alert alert-success ">
+    <div class="close">&times;</div>
+    <strong>Remove</strong> Product Remove Sucessfully
+
+</div>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+<script>
+
+    $(document).ready(function () {
+
+        $('#Addalert').hide();
+        $('#Subalert').hide();
+        $('#Removealert').hide();
+        var calculated = 0;
+
+        $("#myTable .Quantaty").each(function () {
+            var get_textbox_value = $(this).val();
+            console.log(get_textbox_value);
+            calculated += parseFloat(get_textbox_value);
+
+        });
+
+
+        console.log(calculated);
+        $("#ProductInCart").text(calculated);
+
+        //$("#ProductInCart").text(TotalQuantaty);
+
+        //when page load total show
+        var calculated_total_sum = 0;
+        $("#myTable tr").each(function () {
+
+            var currentRow = $(this);
+
+            var Quantaty = currentRow.find(".Quantaty").val();
+            var Price = currentRow.find(".Price").html();
+            var Subtotal = Number(Quantaty) * Number(Price);
+            currentRow.find(".Subtotal").html(Subtotal);
+
+            console.log(Subtotal);
+
+            console.log(Quantaty);
+            console.log(Price);
+        });
+
+        $("#myTable .Subtotal").each(function () {
+            var get_textbox_value = $(this).html();
+            console.log(get_textbox_value);
+            calculated_total_sum += parseFloat(get_textbox_value);
+        });
+
+
+        console.log(calculated_total_sum);
+        var subtotal = $(".SubTotal").html("RS:" + calculated_total_sum);
+        var Total = Number(calculated_total_sum) + 100;
+
+        var subtotal = $(".Total").html("RS:" + Total);
+        console.log(subtotal);
+
+        //when click add button then quatinaty is add
+        $("#myTable").on('click', '.AddQuantaty', function () {
+            // get the current row
+            var currentRow = $(this).closest("tr");
+            var ProductId = currentRow.find(".ProductId").val();
+            var CustomerId = currentRow.find(".CustomerId").val();
+
+
+            var Quantaty = currentRow.find(".Quantaty").val(); // get current row 1st table cell TD value
+            //var col2 = currentRow.find(".pd-name").val(); // get current row 2nd table cell TD value
+            Quantaty = Number(Quantaty) + 1;
+            var Price = currentRow.find(".Price").html();
+            var Subtotal = Number(Quantaty) * Number(Price);
+            currentRow.find(".Subtotal").html(Subtotal);
+            console.log(Quantaty);
+            //console.log(col2);
+            console.log(Price);
+            console.log(Subtotal);
+
+            // $("#QUT").val(Quantaty);
+            currentRow.find(".Quantaty").val(Quantaty);
+            //  var data = col1 + "\n" + col3;
+
+            //alert(data);
+            //here is total of nvalue
+            var calculated_total_sum = 0;
+            $("#myTable .Subtotal").each(function () {
+                var get_textbox_value = $(this).html();
+                console.log(get_textbox_value);
+                calculated_total_sum += parseFloat(get_textbox_value);
+            });
+
+
+            console.log(calculated_total_sum);
+            var subtotal = $(".SubTotal").html("RS:" + calculated_total_sum);
+            var Total = Number(calculated_total_sum) + 100;
+
+            var subtotal = $(".Total").html("RS:" + Total);
+            console.log(subtotal);
+            //here productQuantaty is add
+            var QUT = $("#ProductInCart").text();
+
+            var QUTShow = Number(QUT) + 1
+            $("#ProductInCart").text(QUTShow);
+
+            //here is submited value in db
+            $.ajax({
+                type: "POST",
+                url: "/Customer/ButtonAction",
+                data: { Action: "Add", ProductId: ProductId, CustomerId: CustomerId },
+                success: function (data) {
+                    console.log(data);
+                    console.log("rao");
+                    $('#Addalert').show('fade');
+                    setTimeout(function () {
+                        $('#Addalert').hide('fade');
+                    }, 1000);
+                }
+
+
+            });
+
+
+
+        });
+
+
+
+
+
+        //minus button here we can subtract quantaty
+        $("#myTable").on('click', '.SubtractQuantaty', function () {
+            // get the current row
+
+            var currentRow = $(this).closest("tr");
+            var ProductId = currentRow.find(".ProductId").val();
+            var CustomerId = currentRow.find(".CustomerId").val();
+
+            var Quantaty = currentRow.find(".Quantaty").val(); // get current row 1st table cell TD value
+            //var col2 = currentRow.find(".pd-name").val(); // get current row 2nd table cell TD value
+            if (Quantaty > 1) {
+                Quantaty = Number(Quantaty) - 1;
+                var Price = currentRow.find(".Price").html();
+                var Subtotal = currentRow.find(".Subtotal ").html();
+                var Subtotal = Number(Subtotal) - Number(Price);    //here price of product sutract
+                currentRow.find(".Subtotal").html(Subtotal);
+                console.log(Quantaty);
+                //console.log(col2);
+                console.log(Price);
+                console.log(Subtotal);
+
+                // $("#QUT").val(Quantaty);
+                currentRow.find(".Quantaty").val(Quantaty);
+
+
+                //alert(data);
+                var calculated_total_sum = 0;
+                var SubtractValue = 0;
+                $("#myTable .Subtotal").each(function () {
+                    var get_textbox_value = $(this).html();
+                    console.log(get_textbox_value);
+                    calculated_total_sum += parseFloat(get_textbox_value);
+
+                });
+
+
+                console.log(calculated_total_sum);
+                console.log(SubtractValue);
+                var subtotal = $(".SubTotal").html("RS:" + calculated_total_sum);
+                var Total = Number(calculated_total_sum) + 100;
+
+                var subtotal = $(".Total").html("RS:" + Total);
+                console.log(subtotal);
+                //here is product quantaty sutract
+                var QUT = $("#ProductInCart").text();
+                if (QUT > 1) {
+                    var QUTShow = Number(QUT) - 1
+                    $("#ProductInCart").text(QUTShow);
+                    $.ajax({
+                        type: "POST",
+                        url: "/Customer/ButtonAction",
+                        data: { Action: "Sub", ProductId: ProductId, CustomerId: CustomerId },
+                        success: function (data) {
+                            console.log("Product QuantaySub");
+                            $('#Subalert').show('fade');
+                            setTimeout(function () {
+                                $('#Subalert').hide('fade');
+                            }, 1000);
+
+                        }
+
+                    });
+                }
+
+
+            }
+            else {
+
+                alert("You Want to Delete Product Click Delete Button");
+
+            }
+        });
+
+
+
+        //when clic On Delete Button
+        $("#myTable").on('click', '.Remove', function () {
+
+            alert("You Want To DeleteThe Product???")
+            var currentRow = $(this).closest("tr");
+            var ProductId = currentRow.find(".ProductId").val();
+            var CustomerId = currentRow.find(".CustomerId").val();
+
+            var Quantaty = currentRow.find(".Quantaty").val();
+            currentRow.remove();
+            // $(this).closest('tr').remove();
+            $.ajax({
+
+                type: "POST",
+                url: "/Customer/ButtonAction",
+                data: { Action: "Remove", ProductId: ProductId, CustomerId: CustomerId },
+                success: function (data) {
+
+                    console.log("Product ISRemove ");
+                    $('#Removealert').show('fade');
+                    setTimeout(function () {
+                        $('#Removealert').hide('fade');
+                    }, 1000);
+                }
+
+
+
+            });
+            //here is total of nvalue
+            var calculated_total_sum = 0;
+            $("#myTable .Subtotal").each(function () {
+                var get_textbox_value = $(this).html();
+                console.log(get_textbox_value);
+                calculated_total_sum += parseFloat(get_textbox_value);
+            });
+
+
+            console.log(calculated_total_sum);
+            var subtotal = $(".SubTotal").html("RS:" + calculated_total_sum);
+            var Total = Number(calculated_total_sum) + 100;
+
+            var subtotal = $(".Total").html("RS:" + Total);
+            console.log(subtotal);
+            //here is product quantaty sutract
+            // var Quantaty=$("#")
+            var QUT = $("#ProductInCart").text();
+            if (QUT > 1) {
+                var QUTShow = Number(QUT) - Quantaty;
+                $("#ProductInCart").text(QUTShow);
+            }
+
+        });
+
+    });
+
+
+
+
+
+
+
+
+
+    //var sum = function () {
+    //    $('#myTable tr input[type=text]').each(function () {
+
+    //        var s = $(".Subtotal").html();
+    //        var p = $(".Price").html();
+    //        console.log(s);
+    //        console.log(p);
+    //    });
+    //}
+
+
+    //$('#table tr input[type=text]').$("#AddToCart").click(function () {
+    //    // var t = this.cells[2].innerHTML;
+    //    var s = $("#fname").val();
+    //    var f = $("#f").val();
+    //    //  var s = $(this).val();
+    //    var price = $("#Price").html();
+    //    console.log(s);
+    //    console.log(f);
+    //    console.log(t);
+    //    $("#fname").val(f);
+    //    console.log(price);
+    //    //});
+    //})
+
+    // function trvalue(tr, id) {
+
+    //}
+
+
+
+
+    //var table = document.getElementById('table');
+
+    //for (var i = 1; i < table.rows.length; i++) {
+    //    table.rows[i].onclick = function () {
+    //        //rIndex = this.rowIndex;
+    //        document.getElementById("fname").value = this.cells[2].innerHTML;
+    //        var Price = $('#Price').html();
+    //        console.log(Price);
+    //        //document.getElementById("lname").value = this.cells[1].innerHTML;
+    //        //document.getElementById("age").value = this.cells[2].innerHTML;
+    //    };
+    //}
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //function AddQuat(div, id) {
+    //    var table = document.getElementById('table');
+
+    //    ////for (var i = 1; i < table.rows.length; i++) {
+    //    ////    table.rows[i].onclick = function () {
+
+    //            $('#table tr input[type=text]').onclick(function () {
+    //           // var t = this.cells[2].innerHTML;
+    //            var s = $("#fname").val();
+    //            var f = $("#f").val();
+    //            //  var s = $(this).val();
+    //            var price = $("#Price").html();
+    //            console.log(s);
+    //            console.log(f);
+    //            console.log(t);
+    //            $("#fname").val(f);
+    //            console.log(price);
+    //            //});
+    //        })
+
+
+
+
+
+    //// var Quantaty = $("#QUT").val();
+    // var Quantaty = document.getElementsByName('input');
+    // var Price = $('#Price').html();
+    // var Subtotal = Number(Quantaty) * Number(Price);
+    // $("#Subtotal").html(Subtotal);
+    // console.log(Quantaty);
+    // console.log(Price);
+    // console.log(Subtotal);
+    // Quantaty = Number(Quantaty) + 1;
+    // $("#QUT").val(Quantaty);
+
+
+    //$('#table tr').each(function (i, row) {
+    //    //Here I need to loop the tr again ( i.e. row)
+    //    $("input", row).each(function (i, sr) {
+    //        //here  I want to get all the textbox values
+    //        var s = $(sr).eq(0).val();
+    //        console.log(s)
+
+    //    });
+    //});
+
+
+    //$('#table tr input[type=text]').each(function () {
+
+    //    var s=$(this).val();
+    //    console.log(s);
+    //});
+    // console.log(id);
+    // var s = $("#QUT").val();
+    // var p = $('#last').html();
+    // console.log(p);
+    //console.log("rao");
+    //console.log(s);
+    //var r = 5;
+    //var t = $("#QUT").val(r);
+    //console.log(t);
+
+    //$('#last').html(t);
+
+
+
+    /// $("#subProductPrice").val(300);
+    //  var CartStatus = $("#ProductId").val();
+    //console.log(d);
+    //$.ajax({
+
+    //    type: "POST",
+    //    url: "/Admin/AddToCart",
+    //    //  data: "action=primary&eid=" + eid + "action=primary&d=" + d,
+    //    data: { ProductId: ProductId, CustomerId: CustomerId, CartStatus: CartStatus },
+    //    success: function (data) {
+    //        console.log(data);
+    //        console.log("rao");
+    //        console.log(data.ProductId);
+    //        // $("#uploadedImage").append('<img src="data.ProductImage" class="img-responsive thumbnail"/>');
+    //        //$('#uploadedImage').prepend('<img src="~/Assets/rao.jpg" />')
+    //        //$("#VehicleSize").val(data.VehicleSize);
+    //    }
+
+    //})
+    //}
+
+</script>
+
+
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+

@@ -1,0 +1,58 @@
+.cen
+{
+    align-items:center;
+}
+.icon-size
+{
+font-size: 16px;
+}
+.rad
+{
+    border-radius: 50%;
+    font-size: 18px;
+    font-family: Georgia;
+}
+.footerstyle
+{
+    opacity:0.4;
+    font-size: 18px;
+    font-family: Georgia;
+}
+
+
+.font
+{
+    font-family: Georgia;
+
+}
+.btn-black{
+    background:black;
+}
+.nav-bg
+{
+    background: black;
+}
+.navsize
+{
+    font-size: 19px;
+}
+.link
+{
+    text-decoration: none;
+}
+.fa
+{
+ font-size: 50px;
+}
+.facall
+{
+    font-size: 25px;
+}
+.color
+{
+    color:black;
+}
+.badge1
+{
+    font-size: 20px;
+}

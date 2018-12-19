@@ -1,0 +1,290 @@
+﻿@model EMart.ViewModel.Admin.AdminPanalViewModel
+@{
+    ViewBag.Title = "E_Mart_Home";
+    Layout = "~/Views/Shared/_E_Mart_HomeLayout.cshtml";
+}
+
+
+
+<html>
+<head>
+    <title>Home</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="UTF-8">
+    <link href="~/slick/slick.css" rel="stylesheet" />
+    @*<link rel="stylesheet" type="text/css" href="./slick/slick.css">*@
+    <link href="~/slick/slick-theme.css" rel="stylesheet" />
+    @*<link rel="stylesheet" type="text/css" href="./slick/slick-theme.css">*@
+    <link href="~/css/PopUp.css" rel="stylesheet" />
+    <style type="text/css">
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .slider {
+            width: 90%;
+            margin-top: 3%;
+            margin-left: 5%;
+        }
+
+        .slick-slide {
+            margin: 0px 5px; /*picture distance in slider*/
+        }
+
+            .slick-slide img {
+                width: 100%;
+            }
+
+        .slick-prev:before,
+        .slick-next:before {
+            color: black;
+            width: 90%;
+            margin-top: 100%;
+        }
+
+
+        .slick-slide {
+            transition: all ease-in-out .3s;
+            opacity: .2;
+        }
+
+        .slick-active {
+            opacity: .5;
+        }
+
+        .slick-current {
+            opacity: 1;
+        }
+
+
+        /* Always set the map height explicitly to define the size of the div
+            * element that contains the map. */
+        #right-panel {
+            font-family: 'Roboto','sans-serif';
+            line-height: 30px;
+            padding-left: 10px;
+        }
+
+            #right-panel select, #right-panel input {
+                font-size: 15px;
+            }
+
+            #right-panel select {
+                width: 100%;
+            }
+
+            #right-panel i {
+                font-size: 12px;
+            }
+
+        #map {
+            /*
+            height: 100%;
+            float: left;
+            width: 100%;*/
+        }
+        /* Optional: Makes the sample page fill the window. */
+
+        #floating-panel {
+            position: absolute;
+            top: 10px;
+            left: 25%;
+            z-index: 5;
+            background-color: #fff;
+            padding: 5px;
+            border: 1px solid #999;
+            text-align: center;
+            font-family: 'Roboto','sans-serif';
+            line-height: 30px;
+            padding-left: 10px;
+        }
+
+        #right-panel {
+            border-width: 2px;
+            width: 100%;
+            height: 100%;
+            float: left;
+            text-align: left;
+            padding-top: 0;
+        }
+
+        #autocomplete {
+            height: 30px;
+            padding-left: 10px;
+            border-radius: 4px;
+            border: 1px solid rgb(186, 178, 178);
+            box-shadow: 0px 0px 12px #EFEFEF;
+        }
+
+        #directions-panel {
+            background-color: #FFEE77;
+            padding: 10px;
+            overflow: scroll;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="content-top">
+            <h1>Recent Products</h1>
+            @if (Model.ShowAllCategory != null)
+            {
+
+                <div class="regular slider">
+                    @foreach (var s in Model.ShowAllCategory)
+                    {
+                        <div>
+
+
+                            <a href="@Url.Action("Index", "Home", new { CategoryId = @s.CategoryId }, null)">
+                                
+                                <img src="@Url.Content("~/Pictures/ProductPicture/" + @Path.GetFileName(@s.CatogoryImage_Path))" class="card-img img-responsive" height="100" width="50" alt="Catagory Image">
+                                <div class="text-capitalize text-center">@s.CategoryName</div>
+                            </a>
+                        </div>
+
+
+                    }
+                    }
+                </div>
+
+                @TempData["Errormessage"]
+            }
+            <br /><br />
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+    @{
+        int i = 1;
+    }
+    <div class="container">
+        <div class="row">
+            @foreach (var s in Model.ShowAllProduct)
+            {
+
+                <div class="card text-center  col-lg-3 col-md-6 col-sm-6" id="EditButton" onclick="SelectProduct(this,@s.ProductId,'/abbie3.jpg')">
+                    <input type="hidden" value="@s.ProductId" id="ProductId" />
+                    <div class="card-header font bg-info text-white">
+                        <span class="font">@s.ProductName</span>
+                    </div>
+                    <div class="card-body">
+                        <img src="@Url.Content("~/Pictures/ProductPicture/" + @Path.GetFileName(@s.ProductImage))" class="card-img img-responsive" height="100px" width="100%" alt="Prduct Image"><br>
+                        <span></span>
+                        <h5 class="item_price">@s.ProductPrice</h5>
+                        <a href="#" class="btn btn-primary item_add">Add to cart</a>
+                    </div>
+                </div>
+
+                if (i % 4 == 0)
+                {
+                    <br />
+                }
+                i++;
+
+            }
+        </div>
+    </div>
+    <br><br>
+    <!--//content-->
+    @*here is product show popup*@
+    <div id="AddProduct" class="alert alert-success ">
+        <div class="close">&times;</div>
+        <strong>AddProduct</strong> Product Add Sucessfully
+
+    </div>
+</body>
+
+</html>
+<!--//content-->
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#AddProduct').hide();
+
+        var ProductInCart = $("#ProductInCart").text();
+        $("#ProductInCart").text(ProductInCart);
+        console.log(ProductInCart);
+    });
+
+
+    function SelectProduct(div, ProductId, CustomerId) {
+        //here function quabtaty add and show
+        var QUT = $("#ProductInCart").text();
+        var QUTShow = Number(QUT) + 1
+        $("#ProductInCart").text(QUTShow);
+
+        console.log(ProductId);
+
+        $.ajax({
+
+            type: "POST",
+            url: "/Customer/AddToCart",
+            //  data: "action=primary&eid=" + eid + "action=primary&d=" + d,
+            data: { ProductId: ProductId, CustomerId: CustomerId },
+            success: function (data) {
+                console.log(data);
+                console.log("rao");
+                console.log(data.ProductId);
+
+                $('#AddProduct').show('fade');
+                setTimeout(function () {
+                    $('#AddProduct').hide('fade');
+                }, 1000);
+            }
+
+        })
+    }
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+
+
+
+
+
+
+
+<script src="https://code.jquery.com/jquery-2.2.0.min.js" type="text/javascript"></script>
+@*<script src="./slick/slick.js" type="text/javascript" charset="utf-8"></script>*@
+
+<script src="~/slick/slick.js"></script>
+
+<script type="text/javascript">
+
+    $(".regular").slick({
+        dots: true,
+        infinite: true,
+        slidesToShow: 4,
+        slidesToScroll: 4
+    });
+
+</script>
+

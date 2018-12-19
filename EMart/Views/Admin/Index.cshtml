@@ -1,0 +1,177 @@
+﻿@model IEnumerable<EMart.ViewModel.Admin.Users.UsersViewModel>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Admin_Layout.cshtml";
+}
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="/ShopManager/Index" class="text-info">Dashboard</a>
+    <li class="breadcrumb-item active text-info">Users</li>
+</ol>
+<div class="container-fluid">
+    <!-- Breadcrumbs-->
+
+
+    <div class="row">
+        <div class="col-sm-2">
+        </div>
+        <div class="offset-sm-5 col-sm-5">
+
+            <br />
+
+        </div>
+    </div>
+
+    <p class="text-success">@TempData["AdminHomePage"]</p>
+    <div class="card mb-3">
+        <div class="card-header text-info font-weight-bold">
+            <i class="fa fa-table"></i> Users
+        </div>
+        <div class="card-body">
+            <div class="table-responsive table-sm">
+                <table class="table table-bordered table-sm table-hover table-striped" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr class="text-info">
+                            <th scope="col">
+                                User Id
+                            </th>
+                            <th scope="col">
+                                First Name
+                            </th>
+                            <th scope="col">
+                                Last Name
+                            </th>
+                            <th scope="col">
+                                Email
+                            </th>
+                            <th scope="col">
+                                Ph#
+                            </th>
+                            <th scope="col">
+                                Address
+                            </th>
+                            <th scope="col">
+                                Is Active
+                            </th>
+                            <th scope="col">
+                                RoleName
+                            </th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr class="text-info">
+                            <th scope="col">
+                                User Id
+                            </th>
+                            <th scope="col">
+                                First Name
+                            </th>
+                            <th scope="col">
+                                Last Name
+                            </th>
+                            <th scope="col">
+                                Email
+                            </th>
+                            <th scope="col">
+                               Ph#
+                            </th>
+                            <th scope="col">
+                                Address
+                            </th>
+                            <th scope="col">
+                                Is Active
+                            </th>
+                            <th scope="col">
+                                RoleName
+                            </th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td scope="row">
+                                    @Html.DisplayFor(modelItem => item.Users.UserId)
+                                </td>
+                                <td scope="row">
+                                    @Html.DisplayFor(modelItem => item.Users.FirstName)
+                                </td>
+                                <td scope="row">
+                                    @Html.DisplayFor(modelItem => item.Users.LastName)
+                                </td>
+                                <td scope="row">
+                                    @Html.DisplayFor(modelItem => item.Users.UserEmail)
+                                </td>
+                                <td scope="row">
+                                    @Html.DisplayFor(modelItem => item.Users.PhoneNumber)
+                                </td>
+                                <td scope="row">
+                                    @Html.DisplayFor(modelItem => item.Users.UserAddress)
+                                </td>
+                                <td scope="row">
+                                    @if (item.Users.IsActive=="1")
+                                    {
+                                        <span class="fa fa-check"></span>
+                                    }
+                                    else if (item.Users.IsActive == "0")
+                                    {
+                                        <span class="fa fa-times"></span>
+                                    }
+                                </td>
+                                <td scope="row">
+                                    @Html.DisplayFor(modelItem => item.Roles.RoleName)
+                                </td>
+                                <td scope="row">
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Choose
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            @if (item.Users.IsActive == "1")
+                                            {
+                                                @Html.ActionLink("Disable", "EnableOrDisableUser", new { id = item.Users.UserId, IsActive = "0" }, new { @class = "dropdown-item btn btn-warning btn-sm" })
+                                            }
+                                            else if (item.Users.IsActive == "0")
+                                            {
+                                                @Html.ActionLink("Active", "EnableOrDisableUser", new { id = item.Users.UserId, IsActive = "1" }, new { @class = "dropdown-item btn btn-warning btn-sm" })
+                                            }
+
+
+                                        </div>
+                                    </div>
+
+                                </td>
+                            </tr>
+
+                        }
+
+
+                    </tbody>
+                </table>
+
+
+                @*@section scripts
+                        {
+                        <script type="text/javascript">
+                            $(document).ready(function () {
+                                $("#dataTable").DataTable();
+                            });
+                        </script>
+                    }*@
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+//Here is modal code to add new product
+
+
+
+
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>

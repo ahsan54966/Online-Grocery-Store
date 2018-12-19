@@ -1,0 +1,114 @@
+﻿@model IEnumerable<EMart.Models.Order>
+
+@{
+    ViewBag.Title = "Live Order";
+    Layout = "~/Views/Shared/_ShopManager_Layout.cshtml";
+}
+
+
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="/ShopManager/Index" class="text-info">Dashboard</a>
+    <li class="breadcrumb-item active text-info">Live Ordesr</li>
+</ol>
+<div class="container-fluid">
+    <!-- Breadcrumbs-->
+
+
+    <div class="row">
+        <div class="col-sm-2">
+        </div>
+        <div class="offset-sm-5 col-sm-5">
+
+            <br />
+
+        </div>
+    </div>
+
+    <p class="text-success">@TempData["LiveOrderHomeMessage"]</p>
+    <div class="card mb-3">
+        <div class="card-header text-info font-weight-bold">
+            <i class="fa fa-table"></i>Live Orders
+        </div>
+        <div class="card-body">
+            <div class="table-responsive table-sm">
+                <table class="table table-bordered table-sm table-hover table-striped" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr class="text-info">
+                            <th scope="col">
+                                Order Id
+                            </th>
+                            <th scope="col">
+                                Address
+                            </th>
+                            <th scope="col">
+                                Grand Total
+                            </th>
+                            <th scope="col">
+                                Payment Status
+                            </th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr class="text-info">
+                            <th scope="col">
+                                Order Id
+                            </th>
+                            <th scope="col">
+                                Address
+                            </th>
+                            <th scope="col">
+                                Grand Total
+                            </th>
+                            <th scope="col">
+                                Payment Status
+                            </th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td scope="row">
+                                    @Html.DisplayFor(modelItem => item.OrderId)
+                                </td>
+                                <td scope="row">
+                                    @Html.DisplayFor(modelItem => item.OrderAddress)
+                                </td>
+                                <td scope="row">
+                                    @Html.DisplayFor(modelItem => item.GrandTotal)
+                                </td>
+                                <td scope="row">
+                                    @Html.DisplayFor(modelItem => item.PaymentStatus)
+                                </td>
+                                @*
+                                    <td scope="row">
+                                        @Html.DisplayFor(modelItem => item.OrderCustomerId)
+                                    </td>
+
+
+                                                            <td scope="row">
+                                                                @Html.DisplayFor(modelItem => item.OrderShopingId)
+                                                            </td>
+                                                            <td scope="row">
+                                                                @Html.DisplayFor(modelItem => item.PaymentStatus)
+                                                            </td>
+                                *@
+                                <td scope="row">
+                                    @Html.ActionLink("Detail", "LiveOrderDetail", new { id = item.OrderId, userid = Session["ShopManagerId"] }, new { @class = "btn btn-info" })
+                                </td>
+                            </tr>
+                        }
+
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>

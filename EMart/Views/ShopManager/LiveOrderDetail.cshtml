@@ -1,0 +1,199 @@
+﻿@model IEnumerable<EMart.ViewModel.ShopManagers.OrderDetailView>
+
+@{
+    ViewBag.Title = "LiveOrderDetail";
+    Layout = "~/Views/Shared/_ShopManager_Layout.cshtml";
+}
+
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="/ShopManager/Index" class="text-info">Dashboard</a>
+    <li class="breadcrumb-item active text-info">Live Ordesr Detail</li>
+</ol>
+<div class="container-fluid">
+    <!-- Breadcrumbs-->
+
+
+    <div class="row">
+        <div class="col-sm-2">
+        </div>
+        <div class="offset-sm-5 col-sm-5">
+
+            <br />
+
+        </div>
+    </div>
+
+    <p class="text-success">@TempData["LiveOrderDetailMessage"]</p>
+
+    @*
+        Picking Up the Oders Statics
+    *@
+    @if (Model.Count() > 0)
+    {
+
+        List<string> data = new List<string>();
+        foreach (var da in Model)
+        {
+            data.Add(da.Order.GrandTotal.ToString());
+            data.Add(da.Order.OrderAddress.ToString());
+            data.Add(da.Order.OrderId.ToString());
+            data.Add(da.Order.OrderCustomerId.ToString());
+            data.Add(da.Order.PaymentStatus.ToString());
+        }
+        <div class="card mb-3">
+            <div class="card-header bg-info">
+                <i class="fa fa-table"></i>Order Finance
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12">
+                        <dl class="row">
+                            <dt class="col-5">Number of Items</dt>
+                            <dd class="col-7">@Model.Count()</dd>
+                            <dt class="col-5">Grand Total</dt>
+                            <dd class="col-7">@data[0]</dd>
+                            <dt class="col-5">Customer Address</dt>
+                            <dd class="col-7">@data[1]</dd>
+                            <dt class="col-5">Payment Status</dt>
+                            <dd class="col-7">@data[4]</dd>
+                            <dt class="col-5"></dt>
+                            <dd class="col-7"></dd>
+                            <dt class="col-5">
+                                @Html.ActionLink("Complete Order", "OrderCompletion", new { id = @data[2]}, new { @class = "btn btn-success btn-sm" })
+                            </dt>
+                        </dl>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    }
+    <div class="card mb-3">
+        <div class="card-header text-info font-weight-bold">
+            <i class="fa fa-table"></i> Orders
+        </div>
+        <div class="card-body">
+            <div class="table-responsive table-sm">
+                <table class="table table-bordered table-sm table-hover table-striped" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr class="text-info">
+                            <th scope="col">
+                                Order Id
+                            </th>
+                            <th scope="col">
+                                Address
+                            </th>
+                            <th scope="col">
+                                Product Name
+                            </th>
+                            <th scope="col">
+                                Product Price
+                            </th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr class="text-info">
+                            <th scope="col">
+                                Order Id
+                            </th>
+                            <th scope="col">
+                                Address
+                            </th>
+                            <th scope="col">
+                                Product Name
+                            </th>
+                            <th scope="col">
+                                Product Price
+                            </th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td scope="row">
+                                    @Html.DisplayFor(modelItem => item.Order.OrderId)
+                                </td>
+                                <td scope="row">
+                                    @Html.DisplayFor(modelItem => item.Order.OrderAddress)
+                                </td>
+                                <td scope="row">
+                                    @Html.DisplayFor(modelItem => item.Product.ProductName)
+                                </td>
+                                <td scope="row">
+                                    @Html.DisplayFor(modelItem => item.Product.ProductPrice)
+                                </td>
+                                @*
+                                    <td scope="row">
+                                        @Html.DisplayFor(modelItem => item.OrderCustomerId)
+                                    </td>
+
+
+                                                            <td scope="row">
+                                                                @Html.DisplayFor(modelItem => item.OrderShopingId)
+                                                            </td>
+                                                            <td scope="row">
+                                                                @Html.DisplayFor(modelItem => item.PaymentStatus)
+                                                            </td>
+                                *@
+                            </tr>
+                        }
+
+
+                    </tbody>
+                </table>
+
+
+                @*@section scripts
+                        {
+                        <script type="text/javascript">
+                            $(document).ready(function () {
+                                $("#dataTable").DataTable();
+                            });
+                        </script>
+                    }*@
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+//Here is modal code to add new product
+
+
+
+
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#ConfirmOrder").click(function () {
+
+            var eid = $("#").val();
+            console.log(eid);
+
+            $.ajax({
+
+                type: "POST",
+                url: "/ShopManager/OrderConfirm",
+                data: "action=primary&eid=" + eid,
+                contentType: false,
+                processData: false,
+                success: function (response) {/// <reference path="pathto/script.js" />
+
+                }
+
+            })
+
+        })
+
+
+    })
+
+
+</script>

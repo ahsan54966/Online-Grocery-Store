@@ -1,0 +1,214 @@
+﻿
+@{
+    ViewBag.Title = "_E_Mart_HomeLayout";
+    Layout = "";
+}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Home page</title>
+    <link href="~/Assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Assets/vendor/bootstrap/css/glyphicon.css" rel="stylesheet">
+    <link href="Assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="~/Assets/vendor/bootstrap/css/main.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
+        <!-- Page level plugin CSS -->
+    <link href="~/Assets/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+        <!-- Map StyleSheet -->
+    <link href="~/Assets/css/Map.css" rel="stylesheet" />
+</head>
+<body>
+    <br />
+    @if (Session["Customer"] != null)
+    {
+        var CustomerData = Session["Customer"] as EMart.Models.User;
+        <div class="container">
+            <div class="row">
+                <div class="col-4">
+                    <img src="~/images/EMartLogo.png" alt="Logo Picture" class="img-fluid">
+                </div>
+                <div class="col-5 mt-4 font">
+                    <span>@CustomerData.UserEmail</span> <br>
+                    <a href="/Registeration/Logout/2" class="link btn btn-info btn-sm" style="color:white">Logout</a>
+                </div>
+                <div class="col-2 offset-1 mt-2">
+                    <a href="Customer/CheckOut" style="color:black">
+                        <span class="badge badge-info badge1" style="color:black"><label id="ProductInCart">@Session["CartOrderQuantaty"]</label></span>
+                        <span class="fa fa-shopping-cart black"></span>
+                    </a>
+                </div>
+
+
+            </div>
+
+        </div>
+
+        <br>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <button class="navbar-toggler nav" type="button" data-toggle="collapse" data-target="#navbar"
+                    aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand text-info  fa fa-phone" style="font-size: 20px" href="#"><span class="icon-size">   03457214650</span></a>
+
+            <div class="collapse navbar-collapse" id="navbar">
+
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0 ml-1">
+                    <li class="nav-item active ">
+                        <a class="nav-link text-info font navsize ml-0 " href="/Home">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link text-info font navsize ml-0" href="/Home/About">About</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link text-info font navsize ml-0" href="/Customer/CustomerClaims">Claim</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link text-info font navsize ml-0" href="/Customer/CustomerPayments/@CustomerData.UserId">Payment</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link text-info font navsize ml-0" href="/Customer/OrderHistory/@CustomerData.UserId">Order History</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link text-info navsize font ml-0 " href="#" data-toggle="modal" data-target="#exampleModal">Contact Us</a>
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form>
+                                            <div class="form-group">
+                                                <label for="recipient-name" class="col-form-label">Email:</label>
+                                                <input type="text" class="form-control" id="recipient-name">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="message-text" class="col-form-label">Message:</label>
+                                                <textarea class="form-control" id="message-text"></textarea>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary">Send message</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+                </form>
+            </div>
+        </nav><br><br>
+    }
+    else
+    {
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col-4">
+                    <img src="~/images/EMartLogo.png" class="img-fluid">
+                </div>
+                <div class="col-5 mt-4 font">
+                    <a href="/Registeration/Login/2" class="a btn btn-info btn-sm" style="color:white">Login</a> or <a href="/Registeration/CustomerRegister/2" class="link btn btn-info btn-sm" style="color:white">Signup</a>
+                </div>
+                <div class="col-2 offset-1 mt-2">
+                    <a href="Customer/CheckOut" style="color:black">
+                        <span class="badge badge-info badge1" style="color:black"><label id="ProductInCart">@Session["CartOrderQuantaty"]</label></span>
+                        <span class="fa fa-shopping-cart "></span>
+                   </a>
+                </div>
+
+
+            </div>
+
+        </div>
+
+        <br>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <button class="navbar-toggler nav" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03"
+                    aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand text-info  fa fa-phone" style="font-size: 20px" href="#"><span class="icon-size">   03457214650</span></a>
+
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0 ml-5">
+                    <li class="nav-item active ">
+                        <a class="nav-link text-info font navsize ml-5 " href="/Home">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link text-info font navsize ml-5 " href="/Home/About">About</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link text-info navsize font ml-5 " href="#" data-toggle="modal" data-target="#exampleModal">Contact Us</a>
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form>
+                                            <div class="form-group">
+                                                <label for="recipient-name" class="col-form-label">Recipient:</label>
+                                                <input type="text" class="form-control" id="recipient-name">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="message-text" class="col-form-label">Message:</label>
+                                                <textarea class="form-control" id="message-text"></textarea>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary">Send message</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+                </form>
+            </div>
+        </nav><br><br>
+
+    }
+    
+
+    <!--Render Body Here-->
+            @RenderBody()
+
+    <!--footer-->
+    <br><br>
+
+    <div class="container bg-dark text-center col-12 text-white pt-3 footerstyle fixed-bottom" style="height: 60px">Copyright &copy; EMART @DateTime.Now.Year</div>
+
+    <!--//footer-->
+    <!-- Bootstrap core JavaScript-->
+    <script src="~/Assets/vendor/jquery/jquery.min.js"></script>
+    <script src="~/Assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Assets/vendor/datatables/jquery.dataTables.js"></script>
+    <script src="~/Assets/vendor/datatables/dataTables.bootstrap4.js"></script>
+    <script src="~/Assets/js/sb-admin-datatables.min.js"></script>
+</body>
+</html>
+
+

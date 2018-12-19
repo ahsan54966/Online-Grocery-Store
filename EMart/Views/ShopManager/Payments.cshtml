@@ -1,0 +1,123 @@
+﻿@model IEnumerable<EMart.Models.Payment>
+
+@{
+    ViewBag.Title = "Order";
+    Layout = "~/Views/Shared/_ShopManager_Layout.cshtml";
+}
+
+
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="/ShopManager/Index" class="text-info">Dashboard</a>
+    <li class="breadcrumb-item active text-info">Payment</li>
+</ol>
+<div class="container-fluid">
+    <!-- Breadcrumbs-->
+
+
+    <div class="row">
+        <div class="col-sm-2">
+        </div>
+        <div class="offset-sm-5 col-sm-5">
+
+            <br />
+
+        </div>
+    </div>
+
+    <p class="text-success">@TempData["PaymentHomeMessage"]</p>
+    <div class="card mb-3">
+        <div class="card-header text-info font-weight-bold">
+            <i class="fa fa-table"></i> Orders
+        </div>
+        <div class="card-body">
+            <div class="table-responsive table-sm">
+                <table class="table table-bordered table-sm table-hover table-striped" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr class="text-info">
+                            <th scope="col">
+                                Payment Id
+                            </th>
+                            <th scope="col">
+                                Order Id
+                            </th>
+                            <th scope="col">
+                                Method
+                            </th>
+                            <th scope="col">
+                                Grand Total
+                            </th>
+                            <th scope="col">
+                                Status
+                            </th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr class="text-info">
+                            <th scope="col">
+                                Payment Id
+                            </th>
+                            <th scope="col">
+                                Order Id
+                            </th>
+                            <th scope="col">
+                                Method
+                            </th>
+                            <th scope="col">
+                                Grand Total
+                            </th>
+                            <th scope="col">
+                                Status
+                            </th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td scope="row">
+                                    @Html.DisplayFor(modelItem => item.PaymentId)
+                                </td>
+                                <td scope="row">
+                                    @Html.DisplayFor(modelItem => item.PaymentOrderId)
+                                </td>
+                                <td scope="row">
+                                    @Html.DisplayFor(modelItem => item.PaymentMethod)
+                                </td>
+                                <td scope="row">
+                                    @Html.DisplayFor(modelItem => item.PaymentTotal)
+                                </td>
+                                <td scope="row">
+                                    @Html.DisplayFor(modelItem => item.PaymentStatus)
+                                </td>
+                            </tr>
+                        }
+
+
+                    </tbody>
+                </table>
+
+
+                @*@section scripts
+                        {
+                        <script type="text/javascript">
+                            $(document).ready(function () {
+                                $("#dataTable").DataTable();
+                            });
+                        </script>
+                    }*@
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+//Here is modal code to add new product
+
+
+
+
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>

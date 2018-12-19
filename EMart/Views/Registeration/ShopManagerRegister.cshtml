@@ -1,0 +1,358 @@
+﻿@model EMart.Models.RegisterationViewModel
+@{
+    Layout = "~/Views/Shared/_Registeration_Layout.cshtml";
+}
+<div class="container">
+    <div class="card card-register mx-auto mt-5 bg-dark text-white" style="opacity:0.8">
+        <div class="card-header text-center font-weight-bold" style="font-size:20px">ShopManager Registration</div>
+        <div class="card-body">
+            @*@Html.ValidationSummary()*@
+            @using (Html.BeginForm("ShopManagerRegister", "Registeration", FormMethod.Post, new { enctype = "multipart/form-data", id = "formvalid" }))
+            {
+                <p>@TempData["message"]</p>
+                <p>@ViewBag.message</p>
+                <p>@TempData["extensionerror"]</p>
+                <div class="form-group">
+
+                    <div class="form-row">
+
+
+                        <div class="col-md-6">
+                            <div class="form-row">
+                                <div class="col-md-12">
+
+                                    @Html.LabelFor(model => model.ShopManager.FirstName, "Enter First Name")
+                                    @Html.TextBoxFor(model => model.ShopManager.FirstName, new { @class = "form-control", placeholder = "Enter Last Name"/*, @minlength = "6", @maxlength = "15"*/ })
+                                    @Html.ValidationMessageFor(model => model.ShopManager.FirstName)
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="col-md-1">
+
+                            <div class="form-row">
+                                <div class="col-md-12">
+
+                                    <p>
+
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-5">
+                            <div class="form-row">
+                                <div class="col-md-12">
+                                    <div>
+
+                                        <div id="imagepreview" class="thumbnail">
+                                            <img class="img-responsive" id="targetimage" height="100" width="200" />
+
+                                            @*<div class="caption">
+                                                    <a href="#" onclick="clearpreview()"><i class="glyphicon glyphicon-ban-circle"></i></a>
+                                                    <p id="descieption"></p>
+                                                </div>*@
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+
+                                    <input type="file" name="ShopManager.UserImage" id="show" required />
+
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-row">
+
+
+                        <div class="col-md-6">
+                            @Html.LabelFor(model => model.ShopManager.LastName, "Enter Last Name")
+                            @Html.TextBoxFor(model => model.ShopManager.LastName, new { @class = "form-control", placeholder = "Enter Last Name"/*, @minlength = "6", @maxlength = "15"*/ })
+                            @Html.ValidationMessageFor(model => model.ShopManager.LastName)
+
+
+                        </div>
+                        <div class="col-md-1">
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-row">
+                                <div class="col-md-12">
+                                    @Html.LabelFor(model => model.ShopManager.UserEmail, "Enter Email")
+                                    @Html.TextBoxFor(model => model.ShopManager.UserEmail, new { @class = "form-control", placeholder = "Enter Email", @minlength = "6", @maxlength = "25" })
+                                    @Html.ValidationMessageFor(model => model.ShopManager.UserEmail)
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+
+                    <div class="form-row">
+
+
+                        <div class="col-md-6">
+                            <div class="form-row">
+                                <div class="col-md-12">
+
+                                    @Html.LabelFor(model => model.ShopManager.UserPassword, "Enter Password")
+                                    @Html.TextBoxFor(model => model.ShopManager.UserPassword, new { @class = "form-control", placeholder = "Enter Password", @minlength = "6", @maxlength = "15" })
+                                    @Html.ValidationMessageFor(model => model.ShopManager.UserPassword)
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="col-md-1">
+
+                            <div class="form-row">
+                                <div class="col-md-12">
+
+                                    <p>
+
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-5">
+
+                            <div class="form-row">
+                                <div class="col-md-12">
+
+                                    @Html.LabelFor(model => model.ShopManager.ConfirmPassword, "Enter Password")
+                                    @Html.TextBoxFor(model => model.ShopManager.ConfirmPassword, new { @class = "form-control", placeholder = "Enter Password", @minlength = "6", @maxlength = "15" })
+                                    @Html.ValidationMessageFor(model => model.ShopManager.ConfirmPassword)
+
+
+
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+
+
+
+
+                    <div class="form-row">
+                        <br />
+                        <div class="col-xs-12 col-sm-6">
+
+                            @Html.LabelFor(model => model.ShopManager.PhoneNumber, "Enter Phone Number")
+
+                            @Html.TextBoxFor(model => model.ShopManager.PhoneNumber, new { @class = "form-control", placeholder = "Enter Phone Number"/*, @minlength = "5", @maxlength = "50"*/ })
+
+                            @Html.ValidationMessageFor(model => model.ShopManager.PhoneNumber)
+                        </div>
+
+                    </div>
+
+                    <div class="form-row">
+                        <br />
+                        <div class="col-xs-12 col-sm-6">
+
+
+                            @Html.LabelFor(model => model.ShopManager.UserAddress, "Enter Address")
+
+                            @Html.TextAreaFor(model => model.ShopManager.UserAddress, new { @class = "form-control", placeholder = "Enter Address", @minlength = "5", @maxlength = "50" })
+
+                            @Html.ValidationMessageFor(model => model.ShopManager.UserAddress)
+
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-row">
+
+                        <div class="col-md-4">
+                            <div class="form-row">
+                                <div class="col-md-12">
+                                    @Html.AntiForgeryToken()
+                                    @Html.HiddenFor(m => m.ShopManager.UserLat, new { @Value = "31.4" })
+                                    @Html.HiddenFor(m => m.ShopManager.UserLon, new { @Value = "31.8" })
+                                    <p></p>
+
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="col-md-5">
+
+                            <div class="form-row">
+                                <div class="col-md-12">
+
+                                    <p>
+
+                                    </p>
+                                    <p>
+
+                                        <input type="submit" id="Customer" value="Registers" name="Command" title="Customer" class="btn btn-primary btn-block" />
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-row">
+                                <div class="col-md-12">
+
+
+                                    <p></p>
+
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+
+
+
+
+                </div>
+
+
+
+            }
+            <div class="text-center">
+
+
+                <a href="@Url.Action("Login", "Registeration", new { id =  Session["LoginId"] } , null)"><span class="text-white font-weight-bold">Login Page</span></a>
+                <br />
+                <a href="@Url.Action(  "ForgetPassword", "Registeration",new { id =  Session["LoginId"] })"><span class="text-white font-weight-bold">Forgot Password?</span></a>
+
+
+
+                @*<a class="d-block small mt-3" href="login.html">Login Page</a>
+                    <a class="d-block small" href="forgot-password.html">Forgot Password?</a>*@
+
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script>
+    var Loginuser = function () {
+        debugger
+        var data = $("#formvalid").serialize;
+        if (!$("#formvalid").valid()) {
+            return false;
+        }
+
+
+    }
+
+
+</script>
+<script>
+
+    $(document).ready(function () {
+
+        $("#show").change(function () {
+
+            var File = this.files;
+            if (File && File[0]) {
+
+                ReadImage(File[0]);
+            }
+        })
+
+    })
+
+    var ReadImage = function (file) {
+
+
+        var reader = new FileReader;
+        var image = new Image;
+        reader.readAsDataURL(file);
+        reader.onload = function (_file) {
+            image.src = _file.target.result;
+            image.onload = function () {
+                var height = this.height;
+                var width = this.width;
+                var type = file.type;
+                var size = ~~(file.size / 1024) + "Kb";
+                $("#targetimage").attr('src', _file.target.result);
+                $("#descieption").text("size" + size + "," + height + "X" + width + "");
+                $("#imagepreview").show();
+            }
+
+
+
+        }
+
+
+    }
+    var clearpreview = function () {
+
+        $("#show").val('');
+        $("#descieption").text('');
+        $("#imagepreview").hide();
+    }
+
+</script>
+
+
+
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCUCOhuEzH731AU1Qu_DJ3tRJ1sZGy2fjI&sensor=false&libraries=places"></script>
+<script type="text/javascript">
+    google.maps.event.addDomListener(window, 'load', function () {
+        var options = {
+            types: ['(cities)'],
+            componentRestrictions: { country: "pak" }
+        };
+
+        var UserAddress = document.getElementById('ShopManager_UserAddress');
+        var place1 = new google.maps.places.Autocomplete(UserAddress, options)
+    });
+</script>
+
+
+
+<script type="text/javascript">
+    function initialize() {
+        var input = document.getElementById('ShopManager_UserAddress');
+        var autocomplete = new google.maps.places.Autocomplete(input);
+        google.maps.event.addListener(autocomplete, 'place_changed', function () {
+            var place = autocomplete.getPlace();
+            var placename = place.name;
+            //          var a = place.geometry.location.lat();
+            //            var b = place.geometry.location.lng();
+            //    console.log(a);
+            //      console.log(b);
+
+            document.getElementById('ShopManager_UserLat').value = "31.5555"; //place.geometry.location.lat();
+            document.getElementById('ShopManager_UserLon').value = "32.000"; //place.geometry.location.lng();
+        });
+    }
+    google.maps.event.addDomListener(window, 'load', initialize);
+</script>

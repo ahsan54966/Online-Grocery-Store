@@ -1,0 +1,57 @@
+﻿
+    #Addalert {
+    
+    position:absolute;
+    top:30%;
+    left:50%;
+    background-color:#0094ff;
+    text-align:center;
+  font-size:100%;
+        height:10%;
+        width:30%;  
+        border:dotted;
+         color:#ffffff
+        
+    }
+    #Subalert {
+    
+    position:absolute;
+    top:30%;
+    left:50%;
+    background-color:#ff00dc;
+    text-align:center;
+  font-size:100%;
+        height:10%;
+        width:30%;  
+        border:dotted;
+         color:#ffffff
+        
+    }
+    #Removealert {
+    
+    position:absolute;
+    top:30%;
+    left:50%;
+    background-color:#ff0000;
+    text-align:center;
+  font-size:100%;
+        height:10%;
+        width:30%;  
+        border:dotted;
+         color:#ffffff
+        
+    }
+       #AddProduct{
+    
+    position:absolute;
+    top:40%;
+    left:50%;
+    background-color:#0094ff;
+    text-align:center;
+  font-size:100%;
+        height:10%;
+        width:30%;  
+        border:dotted;
+         color:#ffffff
+        
+    }

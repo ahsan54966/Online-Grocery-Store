@@ -1,0 +1,63 @@
+﻿
+@{
+    ViewBag.Title = "CustomerClaims";
+    Layout = "~/Views/Shared/_E_Mart_HomeLayout.cshtml";
+}
+<div class="row">
+    @if (TempData["ClaimHomeMessage"] != null)
+    {
+        <div class="alert alert-success ml-3">
+            <strong>
+                @TempData["ClaimHomeMessage"]
+            </strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
+
+</div>
+<div class="container">
+    <div class="row offset-3">
+        @using (Html.BeginForm("CustomerClaims", "Customer"))
+        {
+            <div class="form-group ">
+                <label for="Claim" class="text-info font">Describe Your Claims Here:</label>
+                @Html.TextArea("Claim", new { @class = "form-control", @minlength = "5", @maxlength = "150" })
+             </div>
+            <input type="submit" value="Claim" class="form-control btn btn-info" id="claimsubmit" />
+        }
+ 
+    </div>
+
+</div>
+
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+<script>
+
+
+
+    $(document).ready(function () {
+        
+        // For Clearing the TextBox After Submition
+            $("#Claim").html('');
+
+
+
+        $('#SubmitPayment').click(function () {
+            var claim = $("#Claim").val();
+
+            $.ajax({
+                type: "POST",
+                url: "/Customer/CustomerFinishPayment",
+                data: "action=primary&claim=" + claim,
+                success: function (data) {
+                }
+            })
+
+        })
+    })
+
+</script>

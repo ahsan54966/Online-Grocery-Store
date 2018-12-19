@@ -1,0 +1,240 @@
+﻿@model EMart.ViewModel.Customers.Payments.PaymentViewModel
+
+@{
+    ViewBag.Title = "CustomerPayments";
+    Layout = "~/Views/Shared/_E_Mart_HomeLayout.cshtml";
+}
+<div class="container-fluid">
+    <!-- Breadcrumbs-->
+
+
+    <div class="row">
+        <div class="col-sm-2">
+        </div>
+        <div class="offset-sm-5 col-sm-5">
+
+            <br />
+
+        </div>
+    </div>
+
+    <p class="text-success">@TempData["PaymentHomeMessage"]</p>
+    <div class="card mb-3">
+        <div class="card-header text-info font-weight-bold">
+            <i class="fa fa-table"></i> Payments
+        </div>
+        <div class="card-body">
+            <div class="table-responsive table-sm">
+                <table class="table table-bordered table-sm table-hover table-striped" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr class="text-info">
+                            <th scope="col">
+                                Payment Id
+                            </th>
+                            <th scope="col">
+                                Order Id
+                            </th>
+                            <th scope="col">
+                                Method
+                            </th>
+                            <th scope="col">
+                                Grand Total
+                            </th>
+                            <th scope="col">
+                                Status
+                            </th>
+                            <th scope="col">
+                                Action
+                            </th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr class="text-info">
+                            <th scope="col">
+                                Payment Id
+                            </th>
+                            <th scope="col">
+                                Order Id
+                            </th>
+                            <th scope="col">
+                                Method
+                            </th>
+                            <th scope="col">
+                                Grand Total
+                            </th>
+                            <th scope="col">
+                                Status
+                            </th>
+                            <th scope="col">
+                                Action
+                            </th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @foreach (var item in Model.PaymentList)
+                        {
+                            <tr>
+                                <td scope="row">
+                                    @Html.DisplayFor(modelItem => item.PaymentId)
+                                </td>
+                                <td scope="row">
+                                    @Html.DisplayFor(modelItem => item.PaymentOrderId)
+                                </td>
+                                <td scope="row">
+                                    @Html.DisplayFor(modelItem => item.PaymentMethod)
+                                </td>
+                                <td scope="row">
+                                    @Html.DisplayFor(modelItem => item.PaymentTotal)
+                                </td>
+                                <td scope="row">
+                                    @Html.DisplayFor(modelItem => item.PaymentStatus)
+                                </td>
+                                
+                                <td>
+                                 @if(item.PaymentStatus=="UnPaid" && item.PaymentMethod=="JazzCash")
+                                {
+                                    <button class="btn-sm btn-info" id="Payment" onclick="GetPaymentDataPayment(this,'@item.PaymentId')" data-target="#ADDPayment" data-toggle="modal">Pay</button>
+                                    }
+                                  else
+                                    {
+                                    <span class="fa-check">Cleared</span>
+                                    }
+                                </td>   
+                                
+                            </tr>
+                        }
+
+
+                    </tbody>
+                </table>
+
+
+                @*@section scripts
+                        {
+                        <script type="text/javascript">
+                            $(document).ready(function () {
+                                $("#dataTable").DataTable();
+                            });
+                        </script>
+                    }*@
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Model For Payments -->
+
+<div class="modal fade" id="ADDPayment" data-keyboard="false" data-backdrop="static">
+
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h4 class="text-center">Payment Info</h4>
+                <button type="button" class="close btn btn-danger" data-dismiss="modal"> &times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                                        @*    @using (Html.BeginForm("Addproduct", "Admin", FormMethod.Post, new { enctype = "multipart/form-data", id = "formvalid" }))
+            {
+                                <form id="Addproduct">
+
+        </form>
+                                        *@
+
+
+                    <div class="card col-8 offset-sm-2">
+                        
+                        <div class="card-body">
+                            @using (Html.BeginForm("CustomerFinishPayment", "Customer", FormMethod.Post, new { id = "PaymentForm" }))
+                            {
+
+                                <div class="form-group">
+                                    <label class="col-form-label" for="PaymentTotal">Total Payment</label>
+                                    @Html.TextBox("PaymentTotal","", new { @Class = "form-control", id = "PaymentTotal", @readonly = "readonly" })
+                                </div>
+                                <div class="radio radio-inline form-group">
+                                    <label class="col-form-label" for="PaymentMethod">Choose Payment Method</label>
+                                    @Html.RadioButton("PaymentMethod", "JazzCash", new { @Class = "col-1", @checked = "checked", @disabled = "disabled" }) JazzCash
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-form-label" for="PhoneNumber">Enter 11 Digits of Number</label>
+                                    @Html.TextBox("PhoneNumber", "",new { @Class = "form-control", id = "PhoneNumber", @Placeholder = "Ie. 03064446673", @minlength = "11", @maxlength = "11" })
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-form-label" for="SecurityCode">Enter Security Code</label>
+                                    @Html.TextBox("SecurityCode","", new { @Class = "form-control", id = "SecurityCode", @Placeholder = "Ie. 310 on back silver strip", @minlength = "4", @maxlength = "4" })
+
+                                </div>
+                                @Html.Hidden("PaymentId","",new { id="PaymentId"})
+                                @Html.Hidden("CustomerId","",new { @value = Session["CustomerId"] })
+                                @Html.AntiForgeryToken()
+                                
+                                <input type="submit" value="Payment" class="btn btn-info text-white font-weight-bold"/>
+                            }
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+        <div class="modal-footer"></div>
+    </div>
+
+
+
+
+</div>
+
+
+<!--
+    Jquery Code Section
+-->
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+<script>
+    
+    function GetPaymentDataPayment(button, paymentid) {
+
+        $.ajax({
+            type: "POST",
+            url: "/Customer/GetPaymentDetail",
+            data: "action=primary&paymentid=" + paymentid,
+            success: function (data) {
+                console.log(data);
+                $("#PaymentTotal").val(data.PaymentTotal);
+                $("#PaymentId").val(data.PaymentId);
+                $("#CustomerId").val(data.CustomerId);
+            }
+        })
+    }
+    
+    $(document).ready(function () {
+        $('#SubmitPayment').click(function () {
+            var paymentid = $("#PaymentId").val();
+
+            $.ajax({
+                type: "POST",
+                url: "/Customer/CustomerFinishPayment",
+                data: "action=primary&paymentid=" + paymentid,
+                success: function (data) {
+                    if(data.message='1')
+                    {
+                        console.log(data.redirectUrl + 'Ahsan');
+                        window.location.href = data.redirectUrl;
+                    }
+                    else
+                    {
+                        alert('Problem in Payment');
+                    }
+                }
+            })
+
+        })
+    })
+
+</script>

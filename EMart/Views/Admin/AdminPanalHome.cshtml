@@ -1,0 +1,804 @@
+﻿@model EMart.ViewModel.Admin.AdminPanalViewModel
+@{
+    ViewBag.Title = "AdminPanalHome";
+    Layout = "~/Views/Shared/_Admin_Layout.cshtml";
+}
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="/Admin/Index" class="text-info">Dashboard</a>
+    <li class="breadcrumb-item active text-info">Add Driver</li>
+</ol>
+<div class="container-fluid">
+    <!-- Breadcrumbs-->
+
+
+    <div class="row">
+        <div class="col-sm-2">
+            @* @Html.ActionLink("Add Driver", "AdminAddDriver", "Admin", new { companyid = Session["user_Id"] }, new { @Class = "btn btn-info" })
+            *@ 
+            <button class="btn btn-info btn-sm" onclick="ButtonShow" data-target="#ADD" data-toggle="modal" id="ShowButton">ADD Product</button>
+        </div>
+        <div class="offset-sm-5 col-sm-5">
+
+            <br />
+
+        </div>
+    </div>
+
+    <p class="text-success">@TempData["message"]</p>
+    <div class="card mb-3">
+        <div class="card-header text-info font-weight-bold">
+            <i class="fa fa-table"></i>Emart Information
+        </div>
+        <div class="card-body">
+            <div class="table-responsive table-sm">
+                <table class="table table-bordered table-sm table-hover table-striped" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr class="text-info">
+                            <th scope="col">
+                                ProductName
+                                @*@Html.DisplayNameFor(model => model.UserId)*@
+                            </th>
+                            <th scope="col">
+                                ProductsPrice
+                                @*@Html.DisplayNameFor(model => model.UserFirstName)*@
+                            </th>
+                            <th scope="col">
+                                ProductCategry
+                                @*@Html.DisplayNameFor(model => model.UserAddress)*@
+                            </th>
+
+                            <th scope="col">Action</th>
+                            <th scope="col">Action</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr class="text-info">
+                            <th scope="col">
+                                ProductName
+                                @*@Html.DisplayNameFor(model => model.UserId)*@
+                            </th>
+                            <th scope="col">
+                                ProductPrice
+                                @*@Html.DisplayNameFor(model => model.UserFirstName)*@
+                            </th>
+                            
+                            <th scope="col">
+                                ProductCategry
+                                @*@Html.DisplayNameFor(model => model.UserAddress)*@
+                            </th>
+
+                            <th scope="col">Action</th>
+                            <th scope="col">Action</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @foreach (var item in Model.ShowAllProduct)
+                        {
+                            <tr>
+
+                                <td scope="row">
+                                    @Html.DisplayFor(modelItem => item.ProductName)
+                                </td>
+                                <td scope="row">
+                                    @Html.DisplayFor(modelItem => item.ProductPrice)
+                                </td>
+                                @Html.HiddenFor(modelItem => item.CategoryId, new { @class = "TCategoryId" })
+                                @Html.HiddenFor(modelItem => item.ProductQuality, new { @class = "TProductQuality" })
+                                @Html.HiddenFor(modelItem => item.ProductId, new { @class = "TProductId" })
+                                @Html.HiddenFor(modelItem => item.ProductName, new { @class = "TProductName" })
+                                @Html.HiddenFor(modelItem => item.ProductPrice, new { @class = "TProductPrice" })
+                                @Html.HiddenFor(modelItem => item.CategoryName, new { @class = "TCategoryName" })
+
+
+
+
+                                <td scope="row">
+                                    @Html.DisplayFor(modelItem => item.CategoryName)
+                                </td>
+                                
+                                <td scope="row">
+                                  @*  @Html.ActionLink("Edit", "AdminAddDriver", new { companyid = Session["user_Id"] }, new { @Class = "btn-sm btn-warning" })
+                                *@
+                                    @{
+                            int id = item.ProductId;
+                                        }
+                                    <button class="btn-sm btn-warning" id="EditButton" onclick="EditProduct(this,@item.ProductId,'@item.ProductImage')" data-target="#ADD" data-toggle="modal">Edit</button>
+                                           </td>
+
+                                <td scope="row">
+                                    <button class=" DetailButton btn-sm btn-info" id="DetailButton" data-target="#ProductDetail" data-toggle="modal">Detail</button>
+                                </td>
+                                <td scope="row">
+                                    <button class=" DeleteButton btn-sm btn-danger" id="DeleteButton">Delete</button>
+                             </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+
+                @*@section scripts
+                        {
+                        <script type="text/javascript">
+                            $(document).ready(function () {
+                                $("#dataTable").DataTable();
+                            });
+                        </script>
+                    }*@
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+//Here is modal code to add new product
+
+
+
+
+<div class="modal fade" id="ADD" data-keyboard="false" data-backdrop="static">
+
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h4 class="text-center">ADD Products</h4>
+                <button type="button" class="close btn btn-danger" data-dismiss="modal"> &times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+             @*    @using (Html.BeginForm("Addproduct", "Admin", FormMethod.Post, new { enctype = "multipart/form-data", id = "formvalid" }))
+    {*@
+                    <form id="Addproduct">
+                        <div class="form-group">
+                            <div class="form-row">
+                                <div class="col-md-8">
+                                    <div class="form-row">
+                                        <div class="col-md-6 text-center">
+                                            @Html.LabelFor(model => model.product.ProductName, "Product Name")
+                                            @Html.TextBoxFor(model => model.product.ProductName, new { @class = "form-control", Placeholder = "i.e Super", type = "text",id="ProductName" })
+                                            @Html.ValidationMessageFor(model => model.product.ProductName)
+                                        </div>
+                                        <div class="col-md-6 text-center" >
+                                            @Html.LabelFor(model => model.product.CategoryName, "Product Category", new { @class = "categorylist" })
+                                            @* @Html.TextBoxFor(model => model.product.CategoryName, new { @class = "form-control", Placeholder = "i.e Biscut", type = "text", id = "CategoryName" })
+            @Html.ValidationMessageFor(model => model.product.CategoryName)*@
+                                            <select id="Category-dropdown" name="Category" class="form-control"></select>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="form-row">
+                                        <div class="col-md-6">
+                                            @Html.LabelFor(model => model.product.ProductPrice, "Product Price")
+                                            @Html.TextBoxFor(model => model.product.ProductPrice, new { @class = "form-control", Placeholder = "i.e 80", type = "text" ,id="Productprice"})
+                                            @Html.ValidationMessageFor(model => model.product.ProductPrice)
+                                        </div>
+                                        <div class="col-md-6 text-center">
+                                            @Html.LabelFor(model => model.product.ProductQuality, "Product Quality")
+                                            @Html.TextBoxFor(model => model.product.ProductQuality, new { @class = "form-control", Placeholder = "i.e good", type = "text",id="ProductQuality" })
+                                            @Html.ValidationMessageFor(model => model.product.ProductQuality)
+                                            @Html.HiddenFor(model => model.product.ProductImage, new {  type = "hidden", id = "ProductImage" })
+                                            @Html.HiddenFor(model => model.product.ProductId, new { type = "hidden", id = "ProductId" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4  text-center">
+                                   <!--<img  class="image2"  width="50" height="50" id="afzal" />-->
+                                   
+                                    <div id="imagepreview" class="thumbnail">
+                                        <img class="Timage img-responsive" id="targetimage" height="150" width="250" />
+                                        <br />
+                                             <div class="caption">
+          
+                                                <p id="descieption"></p>
+                                            </div>
+                                      
+                                        <input type="file" name="image_file" id="imageBrowes"  />
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-row">
+                                <div class="col-md-4">
+                                  
+                                    <input type="reset" value="Submit" class="btn btn-group-lg btn btn-default" id="product"/>
+
+                                   
+                                    <input type="submit" value="Update" class="btn btn-group-lg btn btn-default" id="Update" />
+                                                                </div>
+                                <div class="col-md-4">
+                                  
+                                    <button type="button" class="btn btn-danger btn btn-group-lg" data-target="#ADDCATEGORY" data-toggle="modal">Add Categroy</button>
+                                </div>
+                                <div class="col-md-4">
+                                    <button type="reset" class="btn btn-danger btn btn-group-lg" data-dismiss="modal">Close</button>
+
+                                </div>
+                                
+                            </div>
+
+                        </div>
+                    </form>
+
+                </div>
+               
+
+            </div>
+        </div>
+        <div class="modal-footer"></div>
+    </div>
+
+
+
+
+</div>
+
+
+
+<div class="modal fade" id="ProductDetail" data-keyboard="false" data-backdrop="static">
+
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h4 class="text-center">Product Detail</h4>
+                <button type="button" class="close btn btn-danger" data-dismiss="modal"> &times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    @*    @using (Html.BeginForm("Addproduct", "Admin", FormMethod.Post, new { enctype = "multipart/form-data", id = "formvalid" }))
+                        {*@
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12 col-sm-6">
+                                <dl class="row">
+                                    <dt class="col-5">Category Id</dt>
+                                    <dd class="DCategoryId col-7"></dd>
+                                    <dt class="col-5">Category Name</dt>
+                                    <dd class="DCategoryName col-7"></dd>
+                                    
+                                   
+
+                                </dl>
+
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <dl class="row">
+
+
+                                    <dt class="col-5">Product Id</dt>
+                                    <dd class="DProductId col-7"></dd>
+                                    <dt class="col-5">Product Name</dt>
+                                    <dd class="DProductName col-7"></dd>
+                                    <dt class="col-5">Product Price</dt>
+                                    <dd class="DProductPrice col-7"></dd>
+                                    <dt class="col-5">Product quality</dt>
+                                    <dd class="DProductquality col-7"></dd>
+
+
+
+                                </dl>
+
+                            </div>
+
+
+
+
+
+
+
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="modal-footer"></div>
+    </div>
+
+
+
+
+</div>
+
+
+
+
+
+<div class="modal fade" id="ADDCATEGORY" data-keyboard="false" data-backdrop="static">
+
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h4 class="text-center">ADD Category</h4>
+                <button type="button" class="close btn btn-danger" data-dismiss="modal"> &times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    @*    @using (Html.BeginForm("Addproduct", "Admin", FormMethod.Post, new { enctype = "multipart/form-data", id = "formvalid" }))
+            {*@
+                    <form id="AddCategory">
+                        <div class="form-group">
+                            <div class="form-row">
+                                <div class="col-md-8">
+                                    <div class="form-row">
+                                        <div class="col-md-6 text-center">
+                                            @Html.LabelFor(model => model.product.ProductName, "Category Name")
+                                            @Html.TextBoxFor(model => model.product.ProductName, new { @class = "form-control", Placeholder = "i.e Super", type = "text", id = "CategoryName" })
+                                            @Html.ValidationMessageFor(model => model.product.ProductName)
+                                        </div>
+                                      
+                                    </div>
+                                    <br />
+                                    
+                                </div>
+                                <div class="col-md-4  text-center">
+
+                                    <div id="Categoryimagepreview" class="thumbnail">
+                                        <img class="img-responsive" id="Categorytargetimage" height="150" width="250" />
+                                        <br />
+                                        <input type="file" name="image" id="CategoryimageBrowes" />
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-row">
+                                <div class="col-md-4">
+
+                                    <input type="reset" value="Submit" class="btn btn-group-lg btn btn-default" id="Category" />
+
+
+                                    <input type="submit" value="Update" class="btn btn-group-lg btn btn-default" id="Update" />
+                                </div>
+                         
+                                <div class="col-md-4">
+                                    <button type="reset" class="btn btn-danger btn btn-group-lg" data-dismiss="modal">Close</button>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </form>
+
+                </div>
+
+
+            </div>
+        </div>
+        <div class="modal-footer"></div>
+    </div>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+
+        
+        //when clic On Delete Button
+        $("#dataTable").on('click', '.DeleteButton', function () {
+
+            alert("Sorry You Can Not Delete  Product");
+
+        })
+
+
+        //when clic On Detail Button
+
+        $("#dataTable").on('click', '.DetailButton', function () {
+            var currentRow = $(this).closest("tr");
+            var ProductId = currentRow.find(".TProductId").val();
+            var ProductName = currentRow.find(".TProductName").val();
+            var ProductPrice = currentRow.find(".TProductPrice").val();
+            var ProductQuality = currentRow.find(".TProductQuality").val();
+            var CategoryId = currentRow.find(".TCategoryId").val();
+            var CategoryName = currentRow.find(".TCategoryName").val();
+
+            console.log("afzal");
+
+            
+            console.log(ProductPrice);
+
+            console.log(ProductQuality);
+            console.log(CategoryId);
+            console.log(CategoryName);
+           
+            var Product = $("#ProductName").val();
+            console.log(Product);
+            $(".DProductId").html(ProductId);
+            $(".DProductName").html(ProductName);
+            $(".DProductPrice").html(ProductPrice);
+            $(".DProductQuality").html(ProductQuality);
+            $(".DCategoryId").html(CategoryId);
+            $(".DCategoryName").html(CategoryName);
+
+        })
+
+
+
+        //$("#DeleteButton").click(function () {
+        //    console.log("afzal");
+        //    alert("Sorry You Can Not Delete  Product");
+        //})
+
+        $(".CategoryList").click(function () {
+
+
+            let dropdown = $('#Category-dropdown');
+
+            dropdown.empty();
+
+            //dropdown.append('<option selected="true" disabled>Choose Category</option>');
+            //dropdown.prop('selectedIndex', 0);
+
+
+            $.ajax({
+                type: "POST",
+                url: "/Admin/AllCategory",
+                success: function (data) {
+                    console.log(data),
+                    $.each(data, function (key, entry) {
+                        dropdown.append($('<option></option>').attr('value', entry.CategoryId).text(entry.CategoryName));
+                    })
+                }
+            });
+
+
+
+        }  )
+        
+
+
+
+
+        $("#ShowButton").click(function () {
+            $("#Update").hide();
+            $("#product").show();
+            clearpreview();
+            
+            document.getElementById("Addproduct").reset();
+            let dropdown = $('#Category-dropdown');
+
+            dropdown.empty();
+
+            dropdown.append('<option selected="true" disabled>Choose Category</option>');
+            dropdown.prop('selectedIndex', 0);
+
+
+            $.ajax({
+                type: "POST",
+                url:"/Admin/AllCategory",
+                success: function (data) {
+                    console.log(data),
+                    $.each(data, function (key, entry) {
+                        dropdown.append($('<option></option>').attr('value', entry.CategoryId).text(entry.CategoryName));
+                    })
+                }
+            });
+
+
+
+        })
+
+        $("#Update").click(function () {
+
+
+            debugger
+            //var formData = new FormData;
+            //var formData = new FormData($('#Addproduct')[0]);
+            //var formdata = $("#Addproduct").serialize();
+            //var file = $("#imageBrowes").get(0).files;
+
+            //data.append("product",formdata);
+
+            //formData.append('image_file', $('input[type=file]')[0].files[0]);
+            //formData.append('ProductName', 'raosab');
+            //formData.append("image_file", file[0]);
+
+            var formData = new FormData();
+            // var email = $("#ProductName").val();ProductCatego
+          
+
+            formData.append('ProductId', $("#ProductId").val());
+            formData.append('ProductName', $("#ProductName").val());
+            formData.append('CategoryName', $("#CategoryName").val()); 
+            formData.append('ProductPrice', $("#Productprice").val());
+            formData.append('ProductQuality', $("#ProductQuality").val());
+            formData.append('ProductImage', $("#ProductImage").val());
+            formData.append('image_file', $('input[type=file]')[0].files[0]);
+            formData.append('CategoryId', $("#Category-dropdown").val());
+
+            $.ajax({
+
+                type: "POST",
+                url: "/Admin/UpdateProduct",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {/// <reference path="pathto/script.js"/>
+                }
+
+            })
+
+        })
+
+    
+
+
+        $("#product").click(function () {
+
+            
+            //debugger
+            //var formData = new FormData;
+            //var formData = new FormData($('#Addproduct')[0]);
+             //var formdata = $("#Addproduct").serialize();
+           //var file = $("#imageBrowes").get(0).files;
+
+            //data.append("product",formdata);
+            
+            //formData.append('image_file', $('input[type=file]')[0].files[0]);
+            //formData.append('ProductName', 'raosab');
+            //formData.append("image_file", file[0]);
+            var d = $("#Category-dropdown").val();
+
+            console.log(d);
+            var formData = new FormData();
+            // var email = $("#ProductName").val();ProductCategor
+            formData.append('ProductName', $("#ProductName").val());
+            formData.append('CategoryId', $("#Category-dropdown").val());
+            formData.append('ProductPrice', $("#Productprice").val());
+            formData.append('ProductQuality', $("#ProductQuality").val());
+
+            formData.append('image_file', $('input[type=file]')[0].files[0]);
+
+            
+
+            $.ajax({
+
+                type: "POST",
+                url: "/Admin/Addproduct",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {/// <reference path="pathto/script.js"/>
+                    clearpreview();
+                }
+
+            })
+            clearpreview();
+        })
+
+        $("#Category").click(function () {
+
+
+            var formData = new FormData();
+            // var email = $("#ProductName").val();ProductCategor
+           
+            formData.append('CategoryName', $("#CategoryName").val());
+           
+
+            formData.append('image_file', $('input[type=file]')[1].files[0]);
+            console.log(formData);
+
+            $.ajax({
+
+                type: "POST",
+                url: "/Admin/AddCategory",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {/// <reference path="pathto/script.js"/>
+                    clearpreview();
+
+                }
+
+            })
+            clearpreview();
+
+        })
+        //let dropdown = $('#Category-dropdown');
+
+        //dropdown.empty();
+
+        //dropdown.append('<option selected="true" disabled>Choose Category</option>');
+        //dropdown.prop('selectedIndex', 0);
+
+        //$.ajax({
+        //    type: "POST",
+        //    url: "/Admin/AllCategory",
+        //    success: function (data) {
+        //        console.log(data),
+        //        $.each(data, function (key, entry) {
+        //            dropdown.append($('<option></option>').attr('value', entry.CategoryId).text(entry.CategoryName));
+        //        })
+        //    }
+        //});
+
+
+
+
+    })
+
+
+</script>
+
+<script>
+    var dove;
+   
+        function EditProduct(button, eid,PicturePath){
+            console.log(eid);
+            $("#Update").show();
+            $("#product").hide();
+           // $("#afzal").attr('src', '~/Assets/images/Registeration/EMARTRegisterBackGround.jpg');
+         //   document.getElementById('afzal').setAttribute('src', '~/Assets/images/Registeration/EMARTRegisterBackGround.jpg');
+            //document.getElementById("afzal").src = "~/Assets/images/Registeration/EMARTRegisterBackGround.jpg";
+           // document.getElementsByClassName("image2").src = "~/Assets/images/Registeration/EMARTRegisterBackGround.jpg";
+            //image.src = "~/Assets/images/Registeration/EMARTRegisterBackGround.jpg"
+            //var image = document.getElementsByClassName("Timage");
+            //console.log(image);
+            //image.src = "~/Assets/images/Registeration/EMARTRegisterBackGround.jpg";
+            
+           // <img src="~/Assets/images/Registeration/EMARTRegisterBackGround.jpg" />
+            var catname;
+            let dropdown = $('#Category-dropdown');
+
+            dropdown.empty();
+            console.log(PicturePath);
+            $("#targetimage").attr('src', 'PicturePath'); //Picture path recive a pat but pic is not show i dont know why
+    
+            $.ajax({
+
+                type: "POST",
+                url: "/Admin/EditProduct",
+                data:  "action=primary&eid="+eid,
+           
+                success: function (data) {
+                    console.log(data);
+                    console.log("rao");
+                   console.log(data.ProductId);
+                     $("#ProductName").val(data.ProductName);
+                     $("#CategoryName").val(data.CategoryName);
+                     
+                     $("#ProductId").val(data.ProductId);
+                     $("#ProductImage").val(data.ProductImage);
+
+                     $("#Productprice").val(data.ProductPrice);
+                     $("#ProductQuality").val(data.ProductQuality);
+                    
+                    // $("#imagepreview").append('<img src="data.ProductImage" class="img-responsive thumbnail"/>');
+                     //var img = data.ProductImage;
+                     //$("#targetimage").attr('src', Timage);
+                     //$(".Timage").attr("src",'Url.Content("~/Pictures/ProductPicture/" + Path.GetFileName(img))');
+                     //$('#uploadedImage').prepend('<img src="~/Assets/rao.jpg" />')
+                    //$("#VehicleSize").val(data.VehicleSize);
+                    //<img src="~/images/pr1.jpg" />
+                    
+                     dropdown.append($('<option></option>').attr('value',data.CategoryId).text(data.CategoryName));
+
+
+                }
+
+            })
+
+            // document.getElementById("Addproduct").reset();
+            //let dropdown = $('#Category-dropdown');
+
+            //dropdown.empty();
+
+            //dropdown.append('<option selected="true" disabled>Choose Category</option>');
+            //dropdown.prop('selectedIndex', 0);
+
+
+
+
+
+
+        }
+   
+</script>
+<script>
+
+    $(document).ready(function () {
+
+        $("#imageBrowes").change(function () {
+
+            var File = this.files;
+            if (File && File[0]) {
+
+                ReadImage(File[0]);
+            }
+        })
+        $("#CategoryimageBrowes").change(function () {
+
+            var File = this.files;
+            if (File && File[0]) {
+
+                CategoryReadImage(File[0]);
+            }
+        })
+    })
+
+    var ReadImage = function (file) {
+
+
+        var reader = new FileReader;
+        var image = new Image;
+        reader.readAsDataURL(file);
+        reader.onload = function (_file) {
+            image.src = _file.target.result;
+            image.onload = function () {
+                var height = this.height;
+                var width = this.width;
+                var type = file.type;
+                var size = ~~(file.size / 1024) + "Kb";
+                $("#targetimage").attr('src', _file.target.result);
+                $("#descieption").text("size" + size + "," + height + "X" + width + "");
+                $("#imagepreview").show();
+            }
+
+
+
+        }
+
+
+    }
+    var CategoryReadImage = function (file) {
+
+
+        var reader = new FileReader;
+        var image = new Image;
+        reader.readAsDataURL(file);
+        reader.onload = function (_file) {
+            image.src = _file.target.result;
+            image.onload = function () {
+                var height = this.height;
+                var width = this.width;
+                var type = file.type;
+                var size = ~~(file.size / 1024) + "Kb";
+                $("#Categorytargetimage").attr('src', _file.target.result);
+                $("#Categorydescieption").text("size" + size + "," + height + "X" + width + "");
+                $("#Categoryimagepreview").show();
+            }
+
+
+
+        }
+
+
+    }
+    var clearpreview = function () {
+
+        $("#imageBrowes").val('');
+        $("#descieption").text('');
+        $("#targetimage").attr('src',"");
+      //$("#imagepreview").hide();
+    }
+
+</script>
+
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
